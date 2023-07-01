@@ -1,21 +1,33 @@
 import "./style.css";
 
-// async function displayData(){
-//   const data = await processData();
-//   const location = document.querySelector('.location');
-//   const region = document.querySelector('.region');
+async function displayData(query){
+  const data = await getAPIData(query);
+  getBackgroundImage(data.current.condition.text)
+  const location = document.querySelector('.location');
+  const region = document.querySelector('.region');
+  
+  location.textContent = data.location.name;
+  region.textContent = data.location.region;
+}
 
-//   location.textContent = data.location.name;
-//   region.textContent = data.location.region;
-// }
+function getBackgroundImage(weather){
+  if (weather.includes('cloudy')) {
+    document.body.style.backgroundImage = 'url(./assets/clouds.jpg)';
+  } else if (weather.includes('rain')) {
+    document.body.style.backgroundImage = 'url(./assets/rain.jpg)';
+  } else if (weather.includes('sun')) {
+    document.body.style.backgroundImage = 'url(./assets/sun.jpg)';
+  } else {
+    document.body.style.backgroundImage = 'url(./assets/trees.jpg)';
+  }
 
-// displayData()
+}
 
 function validateInput() {
   const input = document.querySelector(".search");
   const submit = document.querySelector(".submit");
   const error = document.querySelector(".error-message");
-  const regex = /[^A-Za-z]/;
+  const regex = /[^A-Za-z ]/;
   let userQuery;
 
   submit.addEventListener("click", (e) => {
@@ -34,7 +46,8 @@ function validateInput() {
       error.style.display = "none";
       userQuery = input.value;
     }
-    getAPIData(userQuery);
+    displayData(userQuery);
+    
   });
 }
 
@@ -53,7 +66,6 @@ async function getAPIData(query) {
       `${API_URL}/current.json?key=${API_KEY}&q=${location}`
     );
     const data = await response.json();
-    console.log(data)
     return data;
   } catch (error) {
     console.log(error);
