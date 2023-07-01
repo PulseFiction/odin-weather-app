@@ -2,13 +2,60 @@ import "./style.css";
 
 async function displayData(query){
   const data = await getAPIData(query);
-  getBackgroundImage(data.current.condition.text)
+  console.log(data)
+  await getBackgroundImage(data.current.condition.text)
+  const dashboard = document.querySelector('.dashboard__container');
+
+  dashboard.style.visibility = 'visible'
+
+  // Location and region
   const location = document.querySelector('.location');
-  const region = document.querySelector('.region');
-  
+  const country = document.querySelector('.country');
   location.textContent = data.location.name;
-  region.textContent = data.location.region;
+  country.textContent = data.location.country;
+
+  // Date and time
+  const values = await formatTime(data);
+  const date = document.querySelector('.date');
+  const time = document.querySelector('.time');
+  date.textContent = values[0];
+  time.textContent = values[1];
+
+
+
+
+  // Weather
+  const weather = document.querySelector('.weather');
+  const icon = document.querySelector('.weather-icon');
+  weather.textContent = data.current.condition.text;
+  icon.style.visibility = 'visible';
+  icon.src = data.current.condition.icon;
+
+  // Temperature
+  const temperature = document.querySelector('.temperature');
+  const feelsLike = document.querySelector('.feelslike');
+ ; // Function to add C or F to end needed
+  temperature.textContent = `${data.current.temp_c}°C`
+  feelsLike.textContent = `Feels like: ${data.current.feelslike_c}°C`;
+
+
+  // Utilities
+  const convertButton = document.querySelector('.c-to-f__button');
+
+  convertButton.addEventListener('click', () => {
+    if (temperature.textContent.includes('C')) {
+      temperature.textContent = `${data.current.temp_f}°F` 
+      feelsLike.textContent = `Feels like: ${data.current.feelslike_f}°F`;
+    } else {
+      temperature.textContent = `${data.current.temp_c}°C`
+      feelsLike.textContent = `Feels like: ${data.current.feelslike_c}°C`;
+    }
+    
+  });
+
+  
 }
+
 
 function getBackgroundImage(weather){
   if (weather.includes('cloudy')) {
@@ -73,8 +120,7 @@ async function getAPIData(query) {
 
 }
 
-async function formatTime() {
-  const data = await getAPIData();
+async function formatTime(data) {
   const dataTime = data.location.localtime;
 
   const values = dataTime.split(" ");

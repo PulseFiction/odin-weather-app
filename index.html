@@ -6,7 +6,30 @@
     <title>Odin Project - Weather App</title>
   </head>
   <body>
-    <div id="container">
+    <div id="app">
+      <div class="dashboard__container">
+        <div class="location__container">
+          <h1 class="location"></h1>
+          <h2 class="country"></h2>
+        </div>
+        <div class="date-time__container">
+          <h2 class="date"></h2>
+          <h3 class="time"></h3>
+        </div>
+        <div class="weather__container">
+          <img class="weather-icon" alt="weather icon">
+          <h3 class="weather"></h3>
+        </div>
+        <div class="temperature__container">
+          <div class="temperature-numbers__container">
+            <h3 class="temperature"></h3>
+          <h4 class="feelslike"></h4>
+          </div>
+          <button class="c-to-f__button">Change to Fahrenheit<span class="c-or-f"></span></button>
+        </div>
+
+       
+      </div>
       <form class="form">
         <div class="form-search-bar__container">
           <input type="text" class="search" placeholder="Search by location..." >
@@ -14,14 +37,6 @@
         </div>
         <span class="error-message"></span>
       </form>
-
-      <div class="dashboard__container">
-        <div class="location__container">
-          <h1 class="location"></h1>
-          <h2 class="region"></h2>
-        </div>
-        
-      </div>
     </div>
     <script type="module" src="/main.js"></script>
   </body>
